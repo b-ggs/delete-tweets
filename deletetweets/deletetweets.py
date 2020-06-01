@@ -14,9 +14,9 @@ class TweetDestroyer(object):
         self.twitter_api = twitter_api
         self.dry_run = dry_run
 
-    def destroy(self, tweet_id):
+    def destroy(self, tweet_id, created_at):
         try:
-            print("delete tweet %s" % tweet_id)
+            print("delete tweet %s (%s)" % (tweet_id, created_at))
             if not self.dry_run:
                 self.twitter_api.DestroyStatus(tweet_id)
                 # NOTE: A poor man's solution to honor Twitter's rate limits.
@@ -70,7 +70,7 @@ def delete(tweetjs_path, since_date, until_date, filters, s, min_l, min_r, dry_r
 
         tweets = json.loads(tweetjs_file.read()[25:])
         for row in TweetReader(tweets, since_date, until_date, filters, s, min_l, min_r).read():
-            destroyer.destroy(row["tweet"]["id_str"])
+            destroyer.destroy(row["tweet"]["id_str"], row["tweet"]["created_at"])
             count += 1
 
         print("Number of deleted tweets: %s\n" % count)
