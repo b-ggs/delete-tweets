@@ -19,8 +19,8 @@ class TweetDestroyer(object):
             print("delete tweet %s" % tweet_id)
             if not self.dry_run:
                 self.twitter_api.DestroyStatus(tweet_id)
-            # NOTE: A poor man's solution to honor Twitter's rate limits.
-            time.sleep(0.5)
+                # NOTE: A poor man's solution to honor Twitter's rate limits.
+                time.sleep(0.5)
         except twitter.TwitterError as err:
             print("Exception: %s\n" % err.message)
 
