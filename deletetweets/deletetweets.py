@@ -20,10 +20,10 @@ class TweetDestroyer(object):
             if not self.dry_run:
                 self.twitter_api.DestroyStatus(tweet_id)
                 # NOTE: A poor man's solution to honor Twitter's rate limits.
-                time.sleep(0.5)
+                time.sleep(float(os.environ.get("DESTROY_INTERVAL", 0.5)))
         except twitter.TwitterError as err:
             print("Exception: %s\n" % err.message)
-
+            time.sleep(float(os.environ.get("DESTROY_INTERVAL", 0.5)))
 
 class TweetReader(object):
     def __init__(self, reader, since_date=None, until_date=None, filters=[], spare=[], min_likes=0, min_retweets=0):
